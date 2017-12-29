@@ -1,0 +1,29 @@
+/**             ....
+              ......
+ ***/
+class Solution {
+public:
+    vector<string> readBinaryWatch(int num) {
+        vector<int> dict(60);
+        for(int i=1;i<60;i++){
+            dict[i]=dict[i&(i-1)]+1;
+        }
+        vector<string> res;
+        for(int un=0;un<4&&un<=num;++un){
+            if(num-un>5) continue;
+            for(int i=0;i<12;i++){
+                if(dict[i]!=un) continue;
+                string hour=to_string(i);
+                for(int j=0;j<60;++j){
+                    if(dict[j]==num-un){
+                        string minu=to_string(j);
+                        string time=hour+":"+(j>9? "":"0")+minu;
+                        res.push_back(time);
+                    }
+                }
+            }
+        }
+        return res;
+        
+    }
+};
