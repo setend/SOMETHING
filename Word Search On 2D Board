@@ -1,0 +1,59 @@
+ Given a 2D board and a list of words from the dictionary, find all words in the board.
+
+Each word must be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once in a word. 
+struct trie{
+    trie* next[26];
+    bool word;
+    bool used;
+    trie(bool b=false){
+        word=b;
+        memset(next,NULL,sizeof(trie*)*26);
+        used=b;
+    }
+};
+class Solution {
+    trie *root;
+public:
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
+        vector<string> res;
+        if(board.empty()||words.empty()) return res;
+        int m=board.size(),n=board[0].size();
+        root=new trie();
+        for(string word:words){
+            addnode(root,word);
+        }
+        for(int i=0;i<m;i++)
+            for(int j=0;j<n;j++){
+                bt(board,i,j,root,res,"");
+            }
+        return res;
+    }
+    void bt(vector<vector<char>>& board,int i,int j,trie* t,vector<string>& res,string s){
+        if(i<0||i==board.size()||j<0||j==board[0].size()) return;
+        char c=board[i][j];
+        if(c=='#'||t->next[c-'a']==NULL) return;
+        t=t->next[c-'a'];
+        s=s+c;
+        if(t->word&&!(t->used)){
+            res.push_back(s);
+            t->used=true;
+        }
+        board[i][j]='#';
+        bt(board,i-1,j,t,res,s);
+        bt(board,i+1,j,t,res,s);
+        bt(board,i,j-1,t,res,s);
+        bt(board,i,j+1,t,res,s);
+        board[i][j]=c;
+    }
+    void addnode(trie* root,string word){
+        trie* t=root;
+        for(int i=0;i<word.size();i++){
+            if(t->next[word[i]-'a']==NULL){
+                t->next[word[i]-'a']=new trie();
+            }
+            t=t->next[word[i]-'a'];
+        }
+        t->word=true;
+    }
+    
+};
