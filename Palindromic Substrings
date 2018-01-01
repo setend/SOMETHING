@@ -1,0 +1,19 @@
+ Given a string, your task is to count how many palindromic substrings in this string.
+
+The substrings with different start indexes or end indexes are counted as different substrings even they consist of same characters. 
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        int n=0;
+        for(int i=0;i<s.size();){
+            int j=i,k=i;
+            while(j<s.size()-1&&s[j]==s[j+1])j++;
+            int f=j-k+1;
+            n+=f*(f+1)/2-1;
+            i=j+1;
+            while(k>=0&&j<s.size()&&s[k]==s[j]) {k--;j++;n++;}
+        }
+        return n;
+    }
+};
