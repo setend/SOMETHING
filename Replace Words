@@ -1,0 +1,50 @@
+ In English, we have a concept called root, which can be followed by some other words to form another longer word - let's call this word successor. For example, the root an, followed by other, which can form another word another.
+
+Now, given a dictionary consisting of many roots and a sentence. You need to replace all the successor in the sentence with the root forming it. If a successor has many roots can form it, replace it with the root with the shortest length.
+
+You need to output the sentence after the replacement. 
+
+
+class Solution {
+public:
+    struct trie{
+        bool word;
+        vector<trie*> next;
+        trie(bool b=false){
+            word=b;
+            next=vector<trie*>(26,NULL);
+        }
+    };
+    string replaceWords(vector<string>& dict, string sentence) {
+        trie *root=new trie();
+        buildtrie(dict,root);
+        string res="",t;
+        istringstream in(sentence);
+        while(in>>t){
+            string d=search(t,root);
+            if(d!="#") res+=d;
+            else res+=t;
+            res+=" ";
+        }
+        res.pop_back();
+        return res;
+    }
+    void buildtrie(vector<string>& dict,trie* root){
+        for(auto w:dict){
+            trie *t=root;
+            for(int i=0;i<w.size();i++){
+                if(t->next[w[i]-'a']==NULL) t->next[w[i]-'a']=new trie();;
+                t=t->next[w[i]-'a'];
+            }
+            t->word=true;
+        }
+    }
+    string search(string& t,trie* root){
+        for(int i=0;i<t.size();++i){
+            if(root->word){ return t.substr(0,i);}
+            if(root->next[t[i]-'a']==NULL) break;
+            root=root->next[t[i]-'a'];
+        }
+        return "#";
+    }
+};
