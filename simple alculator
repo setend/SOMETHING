@@ -1,0 +1,170 @@
+/**********
+calculator:
+expresion:
+  item;
+  item+expression;
+  item-expression;
+item:
+  primary;
+  primary*item;
+  primary/item;
+primary:
+  number;
+  '('expression')'
+number:
+  floating-number;
+******************/
+#include "cal.h"
+
+token token_stream::get()
+{
+	if (full) {
+		full = false;
+		return buffer;
+	}
+	char ch;
+	cin >> ch;
+	switch (ch) {
+	case '+':case '-':case '*':case '/':
+	case '(':case ')':case QUIT:case PRINT:
+		return token(ch);
+	case '.':
+	case '0':
+	case '1':
+	case '2':
+	case '3':
+	case '4':
+	case '5':
+	case '6':
+	case '7':
+	case '8':
+	case '9': {
+		cin.putback(ch);
+		double t;
+		cin >> t;
+		return token('8', t);
+	}
+	default:cerror("bad token");
+	}
+}
+
+void token_stream::putback(token t)
+{
+	if (full) cerror("buffer is full");
+	full = true;
+	buffer=t;
+}
+void token_stream::ignore(char c)
+{
+	if (full&&c == buffer.kind) {
+		full = false;
+		return;
+	}
+	full = false;
+	char ch;
+	while (cin >> ch)
+		if (ch == c) return;
+}
+token_stream ts;
+double primary() {
+	token p = ts.get();
+	switch (p.kind) {
+	case '(': {
+		double left = expression();
+		p = ts.get();
+		if (p.kind != ')') cerror("')'is expected");
+		return left;
+	}
+	case '8': return p.value;
+	case '-': return -primary();
+	case '+': return primary();
+	default: cerror("bad priamry");
+	}
+}
+double item() {
+	double left = primary();
+	token t = ts.get();
+	while (true) {
+		switch (t.kind) {
+		case '*': left *= primary(); break;
+		case '/': {
+			double d = primary();
+			if (d == 0) cerror("can't divide 0");
+			left /= d;
+			break;
+		}
+		default:ts.putback(t); return left;
+		}
+		t = ts.get();
+	}
+}
+double expression() {
+	double left = item();
+	token t = ts.get();
+	while (true) {
+		switch (t.kind) {
+		case '+':left += item(); break;
+		case '-':left -= item(); break;
+		default:ts.putback(t); return left;
+		}
+		t = ts.get();
+	}
+}
+void clean_up_mess()
+{
+	ts.ignore(PRINT);
+}
+void calculator() {
+	cout << "welcome to my simple calculator,please enter the expression\n "
+		<<"enter ';' at the end of expression to print answer (q to quit)" 
+		<< endl;
+	while (cin)
+	try {
+		cout << ">";
+		token t = ts.get();
+		while (t.kind == PRINT) t = ts.get();
+		if (t.kind == QUIT) return;
+		ts.putback(t);
+		cout << "=" << expression() << endl;
+	}
+	catch (runtime_error& e) {
+		cerr << e.what() << endl;
+		clean_up_mess();
+	}
+}
+
+#ifndef _CAL_H
+#define _CAL_H
+#include <iostream>
+#include <stdexcept>
+#define PRINT ';'
+#define QUIT 'q'
+using namespace std;
+
+inline void cerror(const string s) {
+	throw runtime_error(s);
+}
+struct token {
+	char kind;
+	double value;
+	token(char k, double v=0.0) :kind(k), value(v) {}
+};
+class token_stream {
+	token buffer;
+	bool full;
+public:
+	token get();
+	void putback(token);
+	void ignore(char c);
+	token_stream() :full(false), buffer(0) {}
+};
+
+double primary();
+double item();
+double expression();
+void clean_up_mess();
+void calculator();
+#endif
+
+
+//////////////////////////////////
