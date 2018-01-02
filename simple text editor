@@ -1,0 +1,125 @@
+#pragma once
+#ifndef _TEXTE_H
+#define _TEXTE_H
+#include <iostream>
+#include <vector>
+#include <list>
+#include <algorithm>
+using namespace std;
+typedef vector<char> Line;
+class text_iterator {
+	list<Line>::iterator In;
+	Line::iterator pos;
+public:
+	text_iterator(list<Line>::iterator i, Line::iterator p) :In(i), pos(p) {}
+	text_iterator& operator++();
+	text_iterator operator++(int) {
+		text_iterator temp(this->In, this->pos);
+		++(*this);
+		return temp;
+	}
+	text_iterator& operator--();
+	text_iterator operator--(int) {
+		text_iterator temp = *this;
+		--(*this);
+		return temp;
+	}
+	char& operator*() {
+		return *pos;
+	}
+	text_iterator operator=(text_iterator);
+	bool operator==(const text_iterator) const;
+	bool operator!=(const text_iterator) const;
+};
+struct document {
+	list<Line> line;
+	document() { line.push_back(Line());}
+	text_iterator begin() {
+		return text_iterator(line.begin(), (*line.begin()).begin());
+	}
+	text_iterator end();
+	void show();
+};
+istream& operator>>(istream& is, document&);
+void erase_line(document& d, int n);
+list<Line>::iterator advance(list<Line>::iterator t,int n);
+#endif // !_TEXTE_H
+
+
+#include "textE.h"
+
+text_iterator & text_iterator::operator++()
+{
+	++pos;
+	if (pos == (*In).end()) {
+		++In;
+		pos = (*In).begin();
+	}
+	return *this;
+	// TODO: 在此处插入 return 语句
+}
+
+text_iterator & text_iterator::operator--()
+{
+	if (pos == (*In).begin()) {
+		--In;
+		pos = (*In).end();
+	}
+	--pos;
+	return *this;
+	// TODO: 在此处插入 return 语句
+}
+
+text_iterator text_iterator::operator=(text_iterator t)
+{
+	this->In = t.In;
+	this->pos = t.pos;
+	return *this;
+}
+
+bool text_iterator::operator==(const text_iterator t) const
+{
+	return this->In==t.In&&this->pos==t.pos;
+}
+
+bool text_iterator::operator!=( const text_iterator t) const
+{
+	return !((*this) == t);
+}
+
+text_iterator document::end()
+{
+	list<Line>::iterator last= line.end();
+	--last;
+	return text_iterator(last,(*last).end());
+}
+
+void document::show()
+{
+	for (text_iterator p = this->begin(); p != this->end(); ++p)
+		cout << *p;
+}
+
+istream & operator>>(istream & is, document &d)
+{
+	char ch;
+	while (is.get(ch)) {
+		d.line.back().push_back(ch);
+		if (ch == '\n')
+			d.line.push_back(Line());
+	}
+	return is;
+	// TODO: 在此处插入 return 语句
+}
+
+void erase_line(document &d, int n)
+{
+	if (n < 0 || n >= d.line.size()) return;
+	d.line.erase(advance(d.line.begin(),n));
+}
+
+list<Line>::iterator advance( list<Line>::iterator t, int n)
+{
+	while (n > 0) { t++; n--; }
+	return t;
+}
