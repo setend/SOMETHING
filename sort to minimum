@@ -1,0 +1,22 @@
+输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+
+class Solution {
+public:
+    string PrintMinNumber(vector<int> numbers) {
+        vector<string> sn;
+        for(int num:numbers) sn.push_back(to_string(num));
+        sort(sn.begin(),sn.end(),[](string a,string b){
+            int i=0,j=0;
+            int l1=a.size(),l2=b.size();
+            while(i<l1||j<l2){
+                if(a[i%l1]<b[j%l2]) return true;
+                else if(a[i%l1]>b[j%l2]) return false;
+                else {++i;++j;}
+            }
+            return false;
+        });
+        string ans="";
+        for(string s:sn) ans+=s;
+        return ans;
+    }
+};
