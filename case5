@@ -1,0 +1,25 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main(){
+    int n;
+    while(cin>>n){
+        vector<int> rec(n);
+        for(int i=0;i<n;++i){
+            cin>>rec[i];
+        }
+        int start=0,end=0,mr=0;
+        int count=0;
+        while(mr<n){
+            for(int i=start;i<=end;++i)
+                mr=max(mr,i+rec[i]);
+            ++count;
+            if(mr<=end) {count=-1;break;}
+            start=end+1;
+            end=mr;
+        }
+        cout<<count<<endl;
+    }
+    return 0;
+}
