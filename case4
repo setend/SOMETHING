@@ -1,0 +1,20 @@
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+int main(){
+    double x;
+    int n;
+    cout<<setprecision(2)<<fixed;
+    while(cin>>x>>n){
+        if(n<=0) {cout<<0;continue;}
+        double sum=x;
+        while(--n){
+            x=sqrt(x);
+            sum+=x;
+        }
+        cout<<sum<<endl;
+    }
+    return 0;
+}
