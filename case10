@@ -1,0 +1,24 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main(){
+    int W,H;
+    while(cin>>W>>H){
+        vector<vector<bool>> grid(W,vector<bool>(H,false));
+        int ans=0;
+        for(int i=0;i<2;++i){
+            int tem=0;
+            for(int j=i;j<W;++j)
+                for(int k=0;k<H;++k){
+                    if(j-2>=0&&grid[j-2][k]||(k-2>=0&&grid[j][k-2])) continue;
+                    grid[j][k]=true;
+                    tem++;
+                }
+            ans=max(ans,tem);
+        }
+        cout<<ans<<endl;
+    }
+    return 0;
+}
