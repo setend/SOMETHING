@@ -1,0 +1,12 @@
+#include <iostream>
+#include <set>
+
+using namespace std;
+
+int main(){
+    string s;
+    set<string> res;
+    while(cin>>s) res.insert(s);
+    cout<<res.size()<<endl;
+    return 0;
+}
