@@ -1,0 +1,21 @@
+#include <iostream>
+
+#include <vector>
+
+using namespace std;
+vector<int> vl{1,5,10,20,50,100};
+int main(){
+    int N;
+    while(cin>>N){
+        // a+5b+10c+20d+50e+100f=N;
+        vector<vector<long>> dp(7,vector<long>(N+1));
+        for(int i=0;i<7;++i) dp[i][0]=1;
+        for(int i=1;i<=N;++i)
+            for(int j=1;j<=6;++j){
+                for(int k=0;vl[j-1]*k<=i;++k)
+                    dp[j][i]+=dp[j-1][i-vl[j-1]*k];
+            }
+        cout<<dp[6][N]<<endl;
+    }
+    return 0;
+}
