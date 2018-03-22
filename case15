@@ -1,0 +1,20 @@
+#include <iostream>
+
+using namespace std;
+int main(){
+    int a,base;
+    while(cin>>a>>base){
+        string s;
+        bool flag=a>0;
+        a=abs(a);
+        while(a){
+            int r=a%base;
+            char pf=r>10? r-10+'A':r+'0';
+            s=pf+s;
+            a/=base;
+        }
+        if(!flag) s='-'+s;
+        cout<<s<<endl;;
+    }
+    return 0;
+}
