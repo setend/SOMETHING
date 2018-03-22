@@ -1,0 +1,16 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+    int n;
+    while(cin>>n){
+        int x=n/8;
+        while(x>=0){
+            if((n-x*8)%6==0) break;
+            --x;
+        }
+        int ans=x>=0? x+(n-x*8)/6:-1;
+        cout<<ans<<endl;
+    }
+}
