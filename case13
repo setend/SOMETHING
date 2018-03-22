@@ -1,0 +1,16 @@
+#include <iostream>
+#include <string>
+#include <algorithm>
+using namespace std;
+
+int main(){
+    string s;
+    while(cin>>s){
+        int p=s.find_last_of('.');
+        if(p==string::npos) cout<<"null"<<endl;
+        else
+        cout<<s.substr(p+1)<<endl;
+        
+    }
+    return 0;
+}
