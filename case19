@@ -1,0 +1,17 @@
+#include <iostream>
+
+using namespace std;
+
+int main(){
+    int n;
+    while(cin>>n){
+        int f1=1,f2=0;
+        while(f1<n){
+            int t=f1;
+            f1+=f2;
+            f2=t;
+        }
+        cout<<min(abs(f1-n),abs(f2-n))<<endl;
+    }
+    return 0;
+}
