@@ -1,0 +1,19 @@
+#include <iostream>
+#include <string>
+#include <set>
+
+using namespace std;
+int main(){
+    string s;
+    while(getline(cin,s)){
+        string a;
+        cin>>a;
+        set<char> st(a.begin(),a.end());
+        string ans;
+        for(int i=0;i<s.size();++i){
+            if(st.count(s[i]))continue;
+            ans+=s[i];
+        }
+        cout<<ans;
+    }
+}
