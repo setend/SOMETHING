@@ -1,0 +1,32 @@
+#include <iostream>
+
+#include <vector>
+//one move two units to make average
+using namespace std;
+int main(){
+    int n;
+    while(cin>>n){
+        vector<int> dt(n);
+        int sum=0;
+        for(int i=0;i<n;++i) {
+            cin>>dt[i];
+            sum+=dt[i];
+        }
+        if(sum%n) cout<<-1<<endl;
+        else{
+            int aver=sum/n;
+            bool flag=false;
+            int t=0;
+            for(int i=0;i<n;++i){
+                int dif=abs(dt[i]-aver);
+                if(dif&1) {flag=true;break;}
+                t+=dif;
+            }
+            if(flag) cout<<-1<<endl;
+            else{
+                cout<<t/4<<endl;
+            }
+        }
+        
+    }
+}
