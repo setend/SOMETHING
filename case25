@@ -1,0 +1,17 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+int main(){
+    int n;
+    while(cin>>n){
+        vector<int> xi(n);
+        vector<int> yi(n);
+        for(int i=0;i<n;++i) cin>>xi[i];
+        for(int i=0;i<n;++i) cin>>yi[i];
+        int mx=10000;
+        for(int i=0;i<n;++i)
+            mx=min(mx,xi[i]+yi[i]-2);
+        cout<<mx<<endl;
+    }
+}
