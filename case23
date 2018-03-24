@@ -1,0 +1,18 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(){
+    bool nums[10001]={0};
+    int t;
+    while(cin>>t) nums[t]=true;
+    string s;
+    for(int i=1,cnt=0;i<10001&&cnt<3;++i){
+        if(!nums[i]){
+            s+=to_string(i);
+            cnt++;
+        }
+    }
+    cout<<stol(s)%7<<endl;
+    return 0;
+}
