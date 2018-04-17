@@ -1,0 +1,24 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main(){
+    int t;
+    cin>>t;
+    while(t--){
+        int n,m;
+        cin>>n>>m;
+        vector<int> ab(n);
+        for(int i=0;i<n;++i) cin>>ab[i];
+        int mx=0;
+        int start=0;
+        for(int i=m;i<ab.size();++i){
+            mx=max(mx,ab[i]-start-1);
+            start=ab[i-m];
+        }
+        mx=max(100-start,mx);
+        cout<<mx<<endl;
+    }
+    return 0;
+}
