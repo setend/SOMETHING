@@ -1,0 +1,38 @@
+#include <iostream>
+#include <string>
+#include <cctype>
+
+using namespace std;
+
+const string zhao("marshtomp");
+const string fjx("fjxmlhx");
+string lower_case(string &s){
+    string ans;
+    for(int i=0;i<s.size();i++){
+        if(isalpha(s[i]))
+            ans+=tolower(s[i]);
+        else
+            ans+=s[i];
+    }
+    return ans;
+}
+
+int main(){
+    string str;
+    while(getline(cin,str)){
+        string t=lower_case(str);
+        string ans;
+        size_t pos=0;
+        size_t p=0;
+        while(pos<str.size()&&(p=t.find(zhao,pos))!=string::npos){
+            if(pos!=p)
+                ans+=str.substr(pos,p-pos);
+            ans+=fjx;
+            pos=p+zhao.size();
+        }
+        if(pos<str.size())
+            ans+=str.substr(pos);
+        cout<<ans<<endl;
+    }
+    return 0;
+}
