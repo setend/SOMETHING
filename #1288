@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+using namespace std;
+
+int main(){
+    int k;
+    cin>>k;
+    while(k--){
+        int N,P,W,H;
+        cin>>N>>P>>W>>H;
+        vector<int> an(N);
+        int sum=0;
+        for(int i=0;i<N;++i){
+            cin>>an[i];
+            sum+=an[i];
+        }
+        int mx=min(W,H);
+        while(W/mx*H/mx*P<sum) --mx;
+        while(mx){
+            int limit=H/mx*P;
+            int lw=W/mx;
+            int s=0;
+            for(int i=0;i<N;++i)
+                s+=an[i]%lw? an[i]/lw+1:an[i]/lw;
+            if(s>limit) --mx;
+            else break;
+        }
+        cout<<mx<<endl;
+    }
+    return 0;
+}
