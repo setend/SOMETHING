@@ -1,0 +1,44 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+/*
+  
+*/
+string Mon[]={"January","February","March","April","May","June",
+                            "July","August","September","October","November",
+                            "December"};
+vector<string> Month(Mon,Mon+12);
+void parseMonth(string &s, int &m1)
+{
+    m1=find(Month.begin(),Month.end(),s)-Month.begin()+1;
+}
+int sol(int y, int m, int d)
+{
+    int cnt=y/4-y/100+y/400;
+    if(y%4==0&&y%100!=0||y%400==0){
+        if(m<2) return cnt-1;
+        if(m==2&&d<29) return cnt-1;
+    }
+    return cnt;
+}
+int main()
+{
+    int n;
+    cin>>n;
+    int i=1;
+    while(n--){
+        int m1,d1,y1;
+        int m2,d2,y2;
+        string ms1,ms2;
+        char buffer;
+        cin>>ms1>>d1>>buffer>>y1;
+        cin>>ms2>>d2>>buffer>>y2;
+        parseMonth(ms1,m1);parseMonth(ms2,m2);
+        int res=sol(y2,m2,d2)-sol(y1,m1,d1);
+        if((y1%4==0&&y1%100!=0||y1%400==0)&&m1==2&&d1==29) ++res;
+        cout<<"Case #"<<i++<<": "<<res<<endl;
+    }
+}
