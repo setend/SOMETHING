@@ -1,0 +1,23 @@
+#include <iostream>
+#include <map>
+using namespace std;
+
+int main(){
+    int n;
+    cin>>n;
+    while(n--){
+        string s,d;
+        cin>>s>>d;
+        bool flag=true;
+        map<char,char> rp;
+        for(int i=0;i<s.size();++i){
+            if(!rp.count(s[i])) rp[s[i]]=d[i];
+            else if(rp[s[i]]!=d[i]){
+                flag=false;
+                break;
+            }
+        }
+        if(flag) cout<<"YES"<<endl;
+        else cout<<"NO"<<endl;
+    }
+}
