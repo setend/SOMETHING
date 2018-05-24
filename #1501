@@ -1,0 +1,27 @@
+#include <iostream>
+#include <cctype>
+using namespace std;
+
+int main(){
+    int n;
+    cin>>n;
+    while(n--){
+        string s;
+        cin>>s;
+        string ans;
+        ans+=s[0];
+        for(int i=1;i<s.size();++i){
+            if(s[i]=='_') continue;
+            if(s[i-1]=='_'){
+                ans+=toupper(s[i]);
+            }
+            else if(isupper(s[i])){
+                ans+='_';
+                ans+=tolower(s[i]);
+            }
+            else ans+=s[i];
+        }
+        cout<<ans<<endl;
+    }
+    return 0;
+}
