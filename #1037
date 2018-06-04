@@ -1,0 +1,27 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+int main()
+{
+    int n;
+    cin>>n;
+    vector<vector<int>> maze;
+    int i=0;
+    while(i<n){
+        maze.push_back(vector<int>(i+1));
+        for(int t=0;t<=i;++t)
+            cin>>maze[i][t];
+        ++i;
+    }
+    int mx=maze[0][0];
+    for(int k=1;k<n;++k)
+        for(int j=0;j<=k;++j){
+            int t=max(j>0? maze[k-1][j-1]:0,j==k? 0:maze[k-1][j]);
+            maze[k][j]+=t;
+            mx=max(maze[k][j],mx);
+        }
+    cout<<mx<<endl;
+    return 0;
+    
+}
