@@ -1,0 +1,22 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector<int> need(n),value(n);
+    vector<int> dp(m+1);
+    for(int i=0;i<n;++i)
+        cin>>need[i]>>value[i];
+    for(int i=0;i<=m;++i)
+        for(int j=0;j<n;++j){
+            if(i>=need[j]){
+                dp[i]=max(dp[i],dp[i-need[j]]+value[j]);
+            }
+        }
+    cout<<dp[m]<<endl;
+    return 0;
+}
