@@ -1,0 +1,34 @@
+#include <iostream>
+#include <set>
+#include <map>
+using namespace std;
+
+set<int> fib{0,1,2,3,5,8,13,21};
+bool check(int n)
+{
+    if(fib.count(n)) return true;
+    return false;
+}
+int main()
+{
+    string s;
+    cin>>s;
+    set<string> ans;
+
+    for(int i=0;i<s.size();++i){
+        string t;
+        int cnt=0;
+        map<char,int> mp;
+        for(int j=i;j<s.size();++j){
+            t+=s[j];
+            mp[s[j]]++;
+            if(mp[s[j]]==1) ++cnt;
+            if(check(cnt)) ans.insert(t);
+
+        }
+    }
+    for(auto it=ans.begin();it!=ans.end();++it)
+        cout<<*it<<endl;
+    return 0;
+
+}
