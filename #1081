@@ -1,0 +1,50 @@
+#include <iostream>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+int main()
+{
+    int N,M,S,T;
+    cin>>N>>M>>S>>T;
+    vector<vector<int> > gh(N+1,vector<int>(N+1,-1));
+    while(M--){
+        int a,b,c;
+        cin>>a>>b>>c;
+        if(gh[a][b]==-1||gh[a][b]>c){
+            gh[a][b]=c;
+            gh[b][a]=c;
+        }
+    }
+    set<int> picked;
+    set<int> pool;
+    vector<int> dist(N+1,0);
+    picked.insert(S);
+    for(int i=1;i<=N;++i)
+        if(i!=S) pool.insert(i);
+    while(dist[T]==0){
+        int mi=10000;
+        int tail(-1);
+        for(set<int>::iterator it=picked.begin();it!=picked.end();++it){
+            for(int i=1;i<=N;++i){
+                if(gh[*it][i]!=-1&&(gh[*it][i]+dist[*it]) < mi){
+
+                    tail=i;
+                    mi=gh[*it][i]+dist[*it];
+                }
+            }
+        }
+        for(set<int>::iterator it=picked.begin();it!=picked.end();++it){
+            gh[*it][tail]=-1;
+            gh[tail][*it]=-1;
+        }
+        dist[tail]=mi;
+
+        picked.insert(tail);
+        pool.erase(tail);
+    }
+    cout<<dist[T]<<endl;
+    return 0;
+
+}
