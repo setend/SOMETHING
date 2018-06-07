@@ -1,0 +1,57 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+int dfs(int a,map<int,int> &mp)
+{
+    if(mp[a]!=a) mp[a]=dfs(mp[a],mp);
+    return mp[a];
+}
+bool judge(int a,int b, map<int,int> &mp)
+{
+    if(!mp.count(a)||!mp.count(b)) return false;
+    if(dfs(a,mp)==dfs(b,mp)) return true;
+    return false;
+}
+void build(int a, int b, map<int,int> &mp)
+{
+    if(mp.count(a)&&mp.count(b)){
+        mp[dfs(b,mp)]=mp[dfs(a,mp)];
+    }
+    else if(mp.count(a)){
+        mp[b]=a;
+    }
+    else if(mp.count(b))
+        mp[a]=b;
+    else {
+        mp[a]=a;
+        mp[b]=a;
+    }
+}
+int main()
+{
+    int n;
+    cin>>n;
+    map<int,int> mp;
+    map<string,int> sn;
+    int mark=0;
+    while(n--){
+        int op;
+        string a,b;
+        cin>>op>>a>>b;
+        if(!sn.count(a)) {
+            sn[a]=mark++;
+        }
+        if(!sn.count(b)){
+            sn[b]=mark++;
+        }
+        if(op){
+            if(judge(sn[a],sn[b],mp))
+                cout<<"yes"<<endl;
+            else cout<<"no"<<endl;
+        }
+        else build(sn[a],sn[b],mp);
+    }
+    return 0;
+}
