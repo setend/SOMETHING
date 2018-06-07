@@ -1,0 +1,36 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main()
+{
+    int n,m;
+    cin>>n>>m;
+    vector< vector<int> > gh(n+1,vector<int>(n+1,-1));
+    while(m--){
+        int a,b,d;
+        cin>>a>>b>>d;
+        if(gh[a][b]==-1||gh[a][b]>d){
+            gh[a][b]=d;
+            gh[b][a]=d;
+        }
+    }
+    for(int i=0;i<=n;++i) gh[i][i]=0;
+
+    for(int k=1;k<=n;++k)
+        for(int i=1;i<=n;++i)
+            for(int j=1;j<=n;++j){
+                if(gh[k][i]!=-1&&gh[k][j]!=-1){
+                    int l=gh[k][i]+gh[k][j];
+                    gh[i][j]=(gh[i][j]==-1)? l:min(gh[i][j],l);
+                    gh[j][i]=gh[i][j];
+                }
+            }
+    for(int i=1;i<=n;++i){
+        for(int j=1;j<n;++j)
+            cout<<gh[i][j]<<' ';
+        cout<<gh[i][n]<<endl;
+    }
+    return 0;
+}
