@@ -1,0 +1,45 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+bool check(int j,int q,int s,int e)
+{
+    int cnt=0;
+    for(int i=s;i<e;++i){
+        if(j&(1<<i)) ++cnt;
+        if(cnt>=q) return false;
+    }
+    return true;
+}
+int main()
+{
+    int n,m,q;
+    cin>>n>>m>>q;
+    vector<int> wi(n); //rubbish
+    vector<vector<int> > dp(n,vector<int>((1<<m),0));
+    for(int i=0;i<n;++i){
+        cin>>wi[i];
+    }
+    dp[0][1]=wi[0];
+    for(int i=1;i<m;++i)
+        for(int j=0;j<1<<i;++j){
+            if(check(j,q+1,0,i)) dp[i][j]=max(dp[i-1][j],dp[i][j]);
+            if(check(j,q,0,i))
+                dp[i][j|1<<i]=max(dp[i-1][j]+wi[i],dp[i][1<<i]);
+        }
+    for(int i=m;i<n;++i){
+        for(int j=0;j<1<<m;++j){
+            if(check(j,q+1,1,m))
+                dp[i][j>>1]=max(dp[i-1][j],dp[i][j>>1]);
+            if(check(j,q,1,m))
+                dp[i][(j>>1)|1<<(m-1)] = max(dp[i-1][j]+wi[i],dp[i][j>>1|1<<(m-1)]);
+        }
+    }
+    int mx=0;
+    for(int i=0;i<1<<m;++i) cout<<dp[n-1][i]<<' ';
+        cout<<endl;
+    for(int i=0;i<1<<m;++i) mx=max(dp[n-1][i],mx);
+    cout<<mx<<endl;
+    return 0;
+}
