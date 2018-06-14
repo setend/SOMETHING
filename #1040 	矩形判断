@@ -1,0 +1,35 @@
+#include <iostream>
+#include <vector>
+#include <set>
+
+using namespace std;
+
+bool judge(vector<vector<int>>& edge)
+{
+    int rect=0,pal=0;
+    for(int i=1;i<4;++i){
+        if(edge[0][0]*edge[i][0]+edge[0][1]*edge[i][1]==0) ++rect;
+        else if(edge[0][0]==edge[i][0]&&edge[0][1]==edge[i][1]
+        ||(edge[0][0]==-edge[i][0]&&edge[0][1]==-edge[i][1])) ++pal;
+    }
+    if(rect==2&&pal==1) return true;
+    return false;
+}
+int main()
+{
+    int T;
+    cin>>T;
+    while(T--){
+        set<pair<int,int>>  dot;
+        vector<vector<int>> edge;
+        for(int i=0;i<4;++i){
+            int x1,y1,x2,y2;
+            cin>>x1>>y1>>x2>>y2;
+            dot.insert({x1,y1});
+            dot.insert({x2,y2});
+            edge.push_back({x2-x1,y2-y1});
+        }
+        if(dot.size()!=4||!judge(edge)) cout<<"NO"<<endl;
+        else cout<<"YES"<<endl;
+    }
+}
